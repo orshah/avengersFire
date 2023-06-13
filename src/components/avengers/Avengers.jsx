@@ -16,7 +16,7 @@ function Avengers() {
   const [urlPic, setUrlPic] = useState("");
   const [realName, setRealName] = useState("");
   const [teamName, seteTeamName] = useState("");
-  const [list, setList] = useState([]);
+  const [card, setCard] = useState([]);
 
   const getAllInfo = async () => {
     try {
@@ -27,7 +27,7 @@ function Avengers() {
         console.log("each item", doc.data(), doc.id);
         return { ...doc.data(), id: doc.id };
       });
-      setList(dbAvengers);
+      setCard(dbAvengers);
       console.log("avengers", dbAvengers);
     } catch (err) {
       console.log("error", err);
@@ -73,34 +73,44 @@ function Avengers() {
     }
   };
   return (
-    <div className="info-container">
-      <input
-        placeholder="input Link"
-        type="text"
-        value={urlPic}
-        onChange={onChangeHandlerPic}
-      />
-      <input
-        placeholder="input Real Name"
-        type="text"
-        value={realName}
-        onChange={onChangeHandlerReal}
-      />
-      <input
-        placeholder="input Team Name"
-        type="text"
-        value={teamName}
-        onChange={onChangeHandlerTeam}
-      />
-      <button onClick={onAddBtnClick}>ADD</button>
-      <div>
-        {list.map((el, index) => {
+    <div className="avengers__input">
+      <div className="avengers__input--container">
+        <div className="avengers__input--flex">
+          <input
+            placeholder="input Link"
+            type="text"
+            value={urlPic}
+            onChange={onChangeHandlerPic}
+          />
+          <input
+            placeholder="input Real Name"
+            type="text"
+            value={realName}
+            onChange={onChangeHandlerReal}
+          />
+          <input
+            placeholder="input Team Name"
+            type="text"
+            value={teamName}
+            onChange={onChangeHandlerTeam}
+          />
+          <button onClick={onAddBtnClick}>ADD</button>
+        </div>
+      </div>
+      <div className="avengers__container">
+        {card.map((el, index) => {
           return (
-            <div key={index}>
-              <img src={el.imgUrl} alt="" style={{ width: "350px" }} />
-              <p>{el.realName}</p>
-              <p>{el.teamName}</p>
-              <button onClick={() => onDeleteCLick(el.id)}>X</button>
+            <div key={index} className="avengers__card">
+              <div className="avengers__card--flex">
+                <button onClick={() => onDeleteCLick(el.id)}>X</button>
+                <img
+                  src={el.imgUrl}
+                  alt=""
+                  style={{ width: "20rem", height: "100%" }}
+                />
+                <p>{el.realName}</p>
+                <p>{el.teamName}</p>
+              </div>
             </div>
           );
         })}
