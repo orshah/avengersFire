@@ -72,6 +72,7 @@ function TodoApp() {
   return (
     <div className="todo-container">
       <input type="text" value={todo} onChange={onChangeHandler} />
+
       <button onClick={onAddBtnClick}>ADD</button>
       <div>
         {list.map((el, index) => {

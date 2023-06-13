@@ -13,7 +13,9 @@ import {
 import React from "react";
 
 function Avengers() {
-  const [info, setInfo] = useState("");
+  const [urlPic, setUrlPic] = useState("");
+  const [realName, setRealName] = useState("");
+  const [teamName, seteTeamName] = useState("");
   const [list, setList] = useState([]);
 
   const getAllInfo = async () => {
@@ -26,7 +28,7 @@ function Avengers() {
         return { ...doc.data(), id: doc.id };
       });
       setList(dbAvengers);
-      console.log("todoList", dbAvengers);
+      console.log("avengers", dbAvengers);
     } catch (err) {
       console.log("error", err);
     }
@@ -36,15 +38,15 @@ function Avengers() {
     getAllInfo();
   }, []);
 
-  const onChangeHandler = (e) => {
-    setInfo(e.target.value);
+  const onChangeHandlerPic = (e) => {
+    setUrlPic(e.target.value);
   };
-
-  //   const onCheckboxClick = async (todoId) => {
-  //     const updatingTodo = doc(db, "todolist", todoId);
-  //     await setDoc(updatingTodo, { isComplited: true }, { merge: true });
-  //     await getAllTodos();
-  //   };
+  const onChangeHandlerReal = (e) => {
+    setRealName(e.target.value);
+  };
+  const onChangeHandlerTeam = (e) => {
+    seteTeamName(e.target.value);
+  };
 
   const onDeleteCLick = async (infoId) => {
     try {
@@ -58,11 +60,13 @@ function Avengers() {
   const onAddBtnClick = async () => {
     try {
       const addingInfo = {
-        imgUrl: info,
+        imgUrl: urlPic,
+        realName: realName,
+        teamName: teamName,
       };
       const avengersCollection = collection(db, "avengers");
       await addDoc(avengersCollection, addingInfo);
-      setInfo("");
+      setUrlPic("");
       await getAllInfo();
     } catch (err) {
       console.log("err:", err);
@@ -70,13 +74,33 @@ function Avengers() {
   };
   return (
     <div className="info-container">
-      <input type="text" value={info} onChange={onChangeHandler} />
+      <input
+        placeholder="input Link"
+        type="text"
+        value={urlPic}
+        onChange={onChangeHandlerPic}
+      />
+      <input
+        placeholder="input Real Name"
+        type="text"
+        value={realName}
+        onChange={onChangeHandlerReal}
+      />
+      <input
+        placeholder="input Team Name"
+        type="text"
+        value={teamName}
+        onChange={onChangeHandlerTeam}
+      />
       <button onClick={onAddBtnClick}>ADD</button>
       <div>
         {list.map((el, index) => {
           return (
             <div key={index}>
-              <img src={el.imgUrl} alt="student" />
+              <img src={el.imgUrl} alt="" style={{ width: "350px" }} />
+              <p>{el.realName}</p>
+              <p>{el.teamName}</p>
+              <button onClick={() => onDeleteCLick(el.id)}>X</button>
             </div>
           );
         })}
